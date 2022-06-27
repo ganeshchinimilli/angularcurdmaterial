@@ -1,0 +1,172 @@
+
+<div class="wrapper">
+
+  <div fxLayout fxLayoutAlign="center center">
+<div class="buttons">
+  <button (click)="toggleDisplayDiv()" class="btn-btn btn-primary ganesh mt-5">Add</button>
+
+  <button (click)="exportexcel()" class="btn-btn btn-secondary export mt-5">Export</button>
+</div>
+    <mat-form-field fxFlex="40%">
+
+
+      <input matInput type="text" (keyup)="doFilter($event)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+<table mat-table [dataSource]="dataSource" matSort  id="ganesh" class="mat-elevation-z8">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+    <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}}</td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Email</th>
+    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+  </ng-container>
+  <ng-container matColumnDef="mobile">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile</th>
+    <td mat-cell *matCellDef="let element"> {{element.mobile}} </td>
+  </ng-container>
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef> Action </th>
+    <td mat-cell *matCellDef="let element">
+      <a (click)="updateuser(element.id)" class="btn btn-primary">Edit</a>
+      <a (click)="remove(element.id)" class="btn btn-danger">Delete</a>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
+<mat-paginator #pagination [pageSizeOptions]="[2,4,5]" showFirstLastButtons></mat-paginator>
+
+
+</div>
+
+
+
+
+
+<div *ngIf="!isShowDiv">
+  <div class="form">
+    <mat-card>
+      <mat-card-header class="head">
+        <h1>Employee Form</h1>
+      </mat-card-header>
+
+      <form class="normal-form" [formGroup]="addUserForm" (ngSubmit)="submit()">
+        <mat-grid-list cols="1">
+          <mat-grid-tile>
+            <div class="controles-container">
+
+              <mat-form-field class="fullwidth">
+                <input
+                  formControlName="name"
+                  matInput
+                  placeholder="Name"
+                  autofocus
+                />
+
+                <mat-icon matPrefix class="my-icon">person</mat-icon>
+                <mat-hint align="end">Name must be minimum of 3 chars </mat-hint>
+                <mat-error *ngIf="checkError('name', 'required')"
+                  >Name is required</mat-error
+                >
+                <mat-error *ngIf="checkError('name', 'pattern')"
+                  >Name should contain alphabetics only</mat-error
+                >
+                <mat-icon
+                  matSuffix
+                  *ngIf="
+                    !checkError('name', 'required') &&
+                    !checkError('name', 'pattern')
+                  "
+                  color="success"
+                  >check_circle</mat-icon
+                >
+              </mat-form-field>
+              <mat-form-field class="fullwidth">
+                <input formControlName="email" matInput placeholder="Email" />
+                <mat-icon matPrefix class="my-icon">email</mat-icon>
+
+                <mat-error *ngIf="checkError('email', 'required')"
+                  >Email is required</mat-error
+                >
+                <mat-error *ngIf="checkError('email', 'pattern')"
+                  >Your Email is Incorrect</mat-error
+                >
+                <mat-icon
+                  matSuffix
+                  *ngIf="
+                    !checkError('email', 'required') &&
+                    !checkError('email', 'pattern')
+                  "
+                  color="success"
+                  >check_circle</mat-icon
+                >
+              </mat-form-field>
+              <mat-form-field class="fullwidth">
+                <input formControlName="mobile" matInput placeholder="Mobile" />
+
+                <mat-icon matPrefix class="my-icon">phone</mat-icon>
+                <mat-hint align="end">Sholuld be 10 digits </mat-hint>
+
+                <mat-error *ngIf="checkError('mobile', 'required')"
+                  >Mobile number is required</mat-error
+                >
+                <mat-error *ngIf="checkError('mobile', 'pattern')"
+                  >Mobile number is incorrect</mat-error
+                >
+                <mat-icon
+                  matSuffix
+                  *ngIf="
+                    !checkError('mobile', 'required') &&
+                    !checkError('mobile', 'pattern')
+                  "
+                  color="success"
+                  >check_circle</mat-icon
+                >
+              </mat-form-field>
+
+
+
+              <div class="button-row">
+                <button mat-raised-button color="primary" type="submit">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </form>
+    </mat-card>
+  </div>
+
+</div>
+
+
+
+<div style=" margin: auto; width: 50%;">
+<!-- hide the table -->
+
+  <table id="excel-table" style="display:none ">
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Username</th>
+      <th>Email</th>
+    </tr>
+    <tr *ngFor="let item of userList">
+      <td>{{item.id}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.email}}</td>
+      <td>{{item.mobile}}</td>
+
+    </tr>
+  </table>
+</div>

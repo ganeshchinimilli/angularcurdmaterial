@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angualrmaterial';
+  private name:any;
+  constructor(){
+
+  }
+
+
+
+
+
 }
