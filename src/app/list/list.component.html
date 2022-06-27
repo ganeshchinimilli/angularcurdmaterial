@@ -1,0 +1,64 @@
+
+
+<form>
+<!-- search bar -->
+<div class="form-group">
+
+<input matInput type="text" (keypress)="doFilter($event)" class="mt-5" placeholder="Search here....">
+
+<button class="btn btn-primary add" (click)="openFormModal()">Add</button>
+
+</div>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col" >Name</th>
+        <th scope="col" >Email</th>
+        <th scope="col" >Mobile</th>
+        <th>Actions</th>
+      </tr>
+
+
+
+
+    </thead>
+    <tbody>
+      <tr *ngIf="!userList || userList.length === 0">
+        <td colspan="5" class="text-center">No records</td>
+    </tr>
+    <tr *ngFor="let user of userList  | paginate: config;let i=index">
+
+
+
+<th scope="row">{{i+1}}</th>
+
+      <td   > {{user.name}}</td>
+      <td> {{user.email}}</td>
+      <td> {{user.phone}}</td>
+      <td>
+        <button class="btn btn-primary" (click)="Editformmodal(user)">Edit</button>
+        <button class="btn btn-danger" (click)="deleteUser(i)">Delete</button>
+      </td>
+
+    </tr>
+    </tbody>
+
+  </table>
+
+
+
+</form>
+<div class="d-flex justify-content-between p-2">
+  <pagination-controls (pageChange)="pageChanged($event)" class="mt-2"></pagination-controls>
+
+
+  <select class="custom-select" style="width: auto" [(ngModel)]="config.itemsPerPage">
+    <option [ngValue]="2">2 items per page</option>
+    <option [ngValue]="4">4 items per page</option>
+    <option [ngValue]="6">6 items per page</option>
+  </select>
+</div>
+
+
